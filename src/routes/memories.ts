@@ -34,7 +34,13 @@ export async function memoriesRoutes(app: FastifyInstance) {
     return memory
   })
 
-  app.post('/memories', async (request) => {
+  app.post('/memories/:id', async (request) => {
+    const paramsSchema = z.object({
+      id: z.string().uuid(),
+    })
+
+    const { id } = paramsSchema.parse(request.params)
+
     const bodySchema = z.object({
       content: z.string(),
       coverUrl: z.string(),
@@ -48,7 +54,7 @@ export async function memoriesRoutes(app: FastifyInstance) {
         content,
         coverUrl,
         isPublic,
-        userId: '6b9bbac6-cf6e-41d0-82f7-d250c07a1c61',
+        userId: id,
       },
     })
 
